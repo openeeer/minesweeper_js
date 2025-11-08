@@ -43,7 +43,7 @@ export async function saveResult(result) {
             player: result.player || '',
             seed: result.seed || null,
             gameId: result.gameId || null,
-            surrendered: result.surrendered || false, // Add surrendered field
+            surrendered: result.surrendered || false,
         });
         req.onsuccess = () => resolve(req.result);
         req.onerror = () => reject(req.error);

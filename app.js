@@ -10,7 +10,6 @@ import {
 } from './db.js';
 import { initParticles } from './particles.js';
 
-// DOM Elements
 const boardEl = document.getElementById('board');
 const widthInput = document.getElementById('widthInput');
 const heightInput = document.getElementById('heightInput');
@@ -20,19 +19,16 @@ const remainingEl = document.getElementById('remaining');
 const playerInput = document.getElementById('playerName');
 const flagModeBtn = document.getElementById('flagModeBtn');
 const surrenderBtn = document.getElementById('surrenderBtn');
-// History Modal
 const historyModal = document.getElementById('historyModal');
 const historyHeader = document.getElementById('historyHeader');
 const historyBody = document.getElementById('historyBody');
 const clearHistoryBtn = document.getElementById('clearHistoryBtn');
 const openHistoryBtn = document.getElementById('openHistoryBtn');
 const closeHistoryBtn = document.getElementById('closeHistoryBtn');
-// Banners
 const loseBanner = document.getElementById('loseBanner');
 const winBanner = document.getElementById('winBanner');
 const newGameWinBtn = document.getElementById('newGameWinBtn');
 const restartBtn = document.getElementById('restartBtn');
-// Replay Elements
 const replayOverlay = document.getElementById('replayOverlay');
 const replayPlayBtn = document.getElementById('replayPlayBtn');
 const replayStepBtn = document.getElementById('replayStepBtn');
@@ -41,7 +37,6 @@ const replayStatus = document.getElementById('replayStatus');
 
 const settingsInputs = [widthInput, heightInput, minesInput];
 
-// State
 let game = null;
 let timerInterval = null;
 let seconds = 0;
@@ -58,7 +53,6 @@ let replayState = {
     result: null,
 };
 
-// --- CORE GAME LOGIC ---
 
 function formatTime(s) {
     const m = Math.floor(s / 60).toString().padStart(2, '0');
@@ -103,7 +97,6 @@ function newGame() {
     surrenderBtn.disabled = true;
 }
 
-// --- RENDERING & UI ---
 
 function renderBoard() {
     boardEl.style.gridTemplateColumns = `repeat(${game.width}, 1fr)`;
@@ -148,7 +141,6 @@ function refreshCells() {
             for (let i = 1; i <= 8; i++) cellEl.classList.remove(`n${i}`);
             if (c.revealed) {
                 if (c.mine) {
-                    // CSS handles the emoji
                 } else if (c.adjacent > 0) {
                     cellEl.textContent = String(c.adjacent);
                     cellEl.classList.add(`n${c.adjacent}`);
@@ -169,7 +161,6 @@ function updateRemainingUI() {
     remainingEl.textContent = `Mines: ${game.mineCount - flagged}`;
 }
 
-// --- EVENT HANDLERS ---
 
 function onCellLeftClick(e) {
     if (game.gameOver || replayState.active) return;
@@ -262,7 +253,6 @@ async function handleSurrender() {
 }
 
 
-// --- HISTORY LOGIC ---
 
 async function loadHistory() {
     allHistoryResults = await getAllResults();
@@ -329,7 +319,6 @@ historyHeader.addEventListener('click', (e) => {
 });
 
 
-// --- REPLAY LOGIC ---
 
 async function beginReplay(resultId) {
     closeHistoryModal();
@@ -354,7 +343,6 @@ async function beginReplay(resultId) {
     replayStepBtn.style.display = 'inline-block';
 }
 
-// RESTORED THIS FUNCTION
 function startReplay(auto) {
     if (!replayState.active || replayState.timer) return;
     
@@ -418,7 +406,6 @@ function stopReplay() {
     boardEl.classList.remove('replay-active');
 }
 
-// --- MODALS, BANNERS & TOGGLES ---
 
 function toggleFlagMode() {
     isFlaggingMode = !isFlaggingMode;
@@ -446,13 +433,11 @@ function hideLoseBanner() { loseBanner.classList.add('hidden'); }
 function showWinBanner() { winBanner.classList.remove('hidden'); }
 function hideWinBanner() { winBanner.classList.add('hidden'); }
 
-// --- DB HELPERS ---
 async function logMove(type, x, y, value) {
     if (!currentGameId) return;
     await addMove(currentGameId, { t: Date.now(), type, x, y, value });
 }
 
-// --- INITIALIZATION ---
 settingsInputs.forEach(input => input.addEventListener('input', newGame));
 surrenderBtn.addEventListener('click', handleSurrender);
 flagModeBtn.addEventListener('click', toggleFlagMode);

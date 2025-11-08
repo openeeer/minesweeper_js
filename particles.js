@@ -1,5 +1,3 @@
-// --- START OF FILE particles.js ---
-
 import { Renderer, Camera, Geometry, Program, Mesh } from 'https://unpkg.com/ogl';
 
 const defaultColors = ['#5a41eaff', '#e6eef6', '#9aa6b2']; // Using theme colors

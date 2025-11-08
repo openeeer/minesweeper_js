@@ -3,7 +3,6 @@ class RNG {
         this.seed = seed >>> 0;
     }
     next() {
-        // xorshift32
         let x = this.seed;
         x ^= x << 13;
         x >>>= 0;
@@ -58,9 +57,7 @@ export class MinesweeperGame {
     }
 
     placeMines(safeX, safeY) {
-        // ensure first revealed cell is safe
         const forbidden = new Set([`${safeX},${safeY}`]);
-        // optionally also protect neighbors for nicer first reveal
         this.neighbors(safeX, safeY).forEach(([nx, ny]) => forbidden.add(`${nx},${ny}`));
 
         let placed = 0;
@@ -81,7 +78,6 @@ export class MinesweeperGame {
                 placed++;
             }
         }
-        // compute adjacency
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
                 const cell = this.board[y][x];
@@ -149,7 +145,6 @@ export class MinesweeperGame {
         return cell.flagged;
     }
     
-    // New method for surrendering
     surrender() {
         if (this.gameOver) return;
         this.gameOver = true;
